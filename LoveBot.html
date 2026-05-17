@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>Memory Capsule ❤️</title>
+
+
+  <style>
+
+    body {
+
+      margin: 0;
+      font-family: Arial, sans-serif;
+
+      background: #fff0f5;
+
+      color: #ff4f7a;
+
+      text-align: center;
+
+    }
+
+    #musicButton {
+
+  position: fixed;
+
+  top: 20px;
+
+  right: 20px;
+
+  border: none;
+
+  padding: 12px 20px;
+
+  border-radius: 30px;
+
+  background: rgba(255,255,255,0.8);
+
+  backdrop-filter: blur(10px);
+
+  cursor: pointer;
+
+  font-size: 16px;
+
+  box-shadow:
+  0 5px 15px rgba(0,0,0,0.1);
+
+  z-index: 999;
+
+}
+
+    #petals {
+
+  position: fixed;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  overflow: hidden;
+
+  z-index: 0;
+
+}
+
+
+
+.petal {
+
+  position: absolute;
+
+  top: -50px;
+
+  font-size: 22px;
+
+  opacity: 0.8;
+
+  animation-name: fall;
+
+  animation-timing-function: linear;
+
+  animation-iteration-count: infinite;
+
+}
+
+
+
+@keyframes fall {
+
+  0% {
+
+    transform:
+    translateY(-10vh)
+    rotate(0deg);
+
+  }
+
+  100% {
+
+    transform:
+    translateY(110vh)
+    rotate(360deg);
+
+  }
+
+}
+
+    .cursor {
+
+  display: inline-block;
+
+  width: 3px;
+
+  background: #ff4f7a;
+
+  margin-left: 4px;
+
+  animation: blink 0.8s infinite;
+
+}
+
+@keyframes blink {
+
+  50% {
+
+    opacity: 0;
+
+  }
+
+}
+
+    .card {
+
+      background: white;
+
+      border-radius: 20px;
+
+      padding: 30px;
+
+      width: 80%;
+      max-width: 700px;
+
+      margin: 40px auto;
+
+      box-shadow:
+      0 10px 30px rgba(0,0,0,0.1);
+
+    }
+
+    .signature {
+
+        position: fixed;
+
+        bottom: 15px;
+
+        left: 20px;
+
+        font-size: 14px;
+
+        color: #c77d92;
+
+        opacity: 0.8;
+
+        letter-spacing: 1px;
+
+        z-index: 999;
+
+    }
+
+    h1, h2 {
+
+      margin-bottom: 10px;
+
+    }
+
+    #mainMessage {
+
+      font-size: 20px;
+      line-height: 1.6;
+
+    }
+
+    .gallery {
+
+      display: grid;
+
+      grid-template-columns:
+      repeat(auto-fit, minmax(250px, 1fr));
+
+      gap: 20px;
+
+      width: 85%;
+
+      margin: 30px auto;
+
+    }
+
+    .gallery img {
+
+      width: 100%;
+
+      border-radius: 20px;
+
+      box-shadow:
+      0 5px 20px rgba(0,0,0,0.1);
+
+    }
+
+    .grid {
+
+      display: grid;
+
+      grid-template-columns:
+      repeat(auto-fit, minmax(200px,1fr));
+
+      gap: 20px;
+
+      width: 85%;
+
+      margin: 20px auto;
+
+    }
+
+    .box {
+
+      background:
+      linear-gradient(
+        135deg,
+        #ff9a9e,
+        #fad0c4
+      );
+
+      border-radius: 20px;
+
+      padding: 50px 20px;
+
+      font-size: 30px;
+
+      cursor: pointer;
+
+      transition: 0.2s;
+
+    }
+
+    .box:hover {
+
+      transform: scale(1.05);
+
+    }
+
+    .buttons {
+
+      margin: 40px 0;
+
+    }
+
+    button {
+
+      border: none;
+
+      padding: 15px 35px;
+
+      border-radius: 30px;
+
+      font-size: 18px;
+
+      cursor: pointer;
+
+      margin: 10px;
+
+    }
+
+    .yes {
+
+      background: #ffd166;
+
+    }
+
+    .no {
+
+      background: #ef476f;
+
+      color: white;
+
+    }
+
+    #popup {
+
+      display: none;
+
+      position: fixed;
+
+      inset: 0;
+
+      background:
+      rgba(0,0,0,0.5);
+
+    }
+
+    .popup-content {
+
+      background: white;
+
+      width: 90%;
+      max-width: 400px;
+
+      margin: 15% auto;
+
+      padding: 30px;
+
+      border-radius: 20px;
+
+    }
+    
+
+
+  </style>
+
+</head>
+
+<body>
+
+  <audio id="bgMusic" loop>
+
+  <source src="music.mp3" type="audio/mpeg">
+
+</audio>
+  <div id="petals"></div>
+
+  <div class="card">
+
+    <h1 id="receiverName">
+
+      Loading...
+
+    </h1>
+
+    <p id="mainMessage"></p>
+
+  </div>
+
+
+
+  <h2>Little Messages 💌</h2>
+
+  <div class="grid">
+
+    <div class="box"
+         onclick="reveal(this,
+         'You make ordinary days magical 🌸')">
+
+      🎊
+
+    </div>
+
+    <div class="box"
+         onclick="reveal(this,
+         'Some people feel like home ❤️')">
+
+      🎧
+
+    </div>
+
+    <div class="box"
+         onclick="reveal(this,
+         'You are deeply appreciated ✨')">
+
+      🔥
+
+    </div>
+
+  </div>
+
+
+
+  <h2>Memories 📸</h2>
+
+  <div class="gallery"
+       id="gallery">
+
+  </div>
+
+
+
+  <h2>A Tiny Question ♾️</h2>
+
+  <div class="buttons">
+
+    <button class="yes"
+            onclick="showPopup()">
+
+      YES ❤️
+
+    </button>
+
+    <button class="no"
+            onclick="sadPopup()">
+
+      NO 💔
+
+    </button>
+
+  </div>
+
+
+
+  <!-- POPUP -->
+
+  <div id="popup">
+
+    <div class="popup-content">
+
+      <h2>💖</h2>
+
+      <p id="popupText">
+
+        Loading...
+
+      </p>
+
+      <button class="yes"
+              onclick="closePopup()">
+
+        Close
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+
+  <script>
+
+    const API_URL =
+
+    "https://script.google.com/macros/s/AKfycbxtb59g9IfPs6-jYE6obkxtZPGqA5vIMpj-Zovc4Yw0QH_aFrmNgmX8FBe-IEKJPt_KyA/exec";
+
+
+
+    let memoryData = {};
+
+
+
+    // GET ID FROM URL
+
+    const url =
+    new URL(window.location.href);
+
+    const id =
+    url.searchParams.get("id");
+
+
+    function typeWriter(element, text, speed = 50) {
+
+  let i = 0;
+
+  element.innerHTML =
+  `<span id="typing"></span>
+   <span class="cursor"></span>`;
+
+
+
+  const typing =
+  document.getElementById("typing");
+
+
+
+  const interval = setInterval(() => {
+
+    typing.innerHTML += text.charAt(i);
+
+    i++;
+
+
+
+    if(i >= text.length) {
+
+      clearInterval(interval);
+
+    }
+
+  }, speed);
+
+}
+
+  const music =
+document.getElementById("bgMusic");
+
+let playing = false;
+
+
+
+function toggleMusic() {
+
+  if(!playing) {
+
+    music.play();
+
+    playing = true;
+
+    document.getElementById(
+      "musicButton"
+    ).innerText =
+
+    "⏸ Pause Music";
+
+  }
+
+  else {
+
+    music.pause();
+
+    playing = false;
+
+    document.getElementById(
+      "musicButton"
+    ).innerText =
+
+    "🎵 Play Music";
+
+  }
+
+}
+
+
+
+    async function loadData() {
+
+      if(!id) {
+
+        document.body.innerHTML = `
+
+          <h1>
+            No Memory ID Found 😢
+          </h1>
+
+          <p>
+            Open using:
+            LoveBot.html?id=abc123
+          </p>
+
+        `;
+
+        return;
+      }
+
+
+
+      try {
+
+        const response =
+        await fetch(`${API_URL}?id=${id}`);
+
+        const data =
+        await response.json();
+
+        console.log(data);
+
+
+
+        if(data.error) {
+
+          document.body.innerHTML = `
+
+            <h1>
+              Memory Not Found 😢
+            </h1>
+
+          `;
+
+          return;
+        }
+
+
+
+        memoryData = data;
+
+
+
+        // NAME
+
+        document.getElementById(
+          "receiverName"
+        ).innerText =
+        data.receiver + " ❤️";
+
+
+
+        // MESSAGE
+
+        typeWriter(
+
+  document.getElementById(
+    "mainMessage"
+  ),
+
+  data.message,
+
+  45
+
+);
+
+
+
+        // POPUP
+
+        document.getElementById(
+          "popupText"
+        ).innerText =
+        data.popup;
+
+
+
+        // IMAGES
+
+        const gallery =
+        document.getElementById("gallery");
+
+
+
+        if(data.images &&
+           data.images.trim() !== "") {
+
+          const imageArray =
+          data.images.split(",");
+
+
+
+          imageArray.forEach(image => {
+
+            const trimmed =
+            image.trim();
+
+
+
+            if(trimmed !== "") {
+
+              const img =
+              document.createElement("img");
+
+              img.src = trimmed;
+
+              gallery.appendChild(img);
+
+            }
+
+          });
+
+        }
+
+      }
+
+      catch(error) {
+
+        console.error(error);
+
+        document.body.innerHTML = `
+
+          <h1>
+            Something went wrong 😢
+          </h1>
+
+        `;
+      }
+
+    }
+
+
+
+    // YES POPUP
+
+    function showPopup() {
+
+      document.getElementById(
+        "popup"
+      ).style.display =
+      "block";
+
+    }
+
+
+
+    // CLOSE POPUP
+
+    function closePopup() {
+
+      document.getElementById(
+        "popup"
+      ).style.display =
+      "none";
+
+    }
+
+
+
+    // NO BUTTON
+
+    function sadPopup() {
+
+      const sender =
+      memoryData.sender || "someone";
+
+
+
+      alert(
+
+        `Why would you break ${sender}'s heart like that? 💔🥺`
+
+      );
+
+    }
+
+
+
+    // REVEAL BOXES
+
+    function reveal(element, text) {
+
+      element.innerHTML =
+
+      `<span style="font-size:18px;">
+        ${text}
+      </span>`;
+
+
+
+      element.style.cursor =
+      "default";
+
+    }
+
+
+
+    // START
+
+    function createPetals() {
+
+  const petalsContainer =
+  document.getElementById("petals");
+
+
+
+  for(let i = 0; i < 20; i++) {
+
+    const petal =
+    document.createElement("div");
+
+
+
+    petal.classList.add("petal");
+
+
+
+    petal.innerHTML = "🌸";
+
+
+
+    petal.style.left =
+    Math.random() * 100 + "vw";
+
+
+
+    petal.style.animationDuration =
+    (8 + Math.random() * 10) + "s";
+
+
+
+    petal.style.fontSize =
+    (16 + Math.random() * 18) + "px";
+
+
+
+    petal.style.opacity =
+    0.3 + Math.random() * 0.7;
+
+
+
+    petal.style.animationDelay =
+    Math.random() * 10 + "s";
+
+
+
+    petalsContainer.appendChild(petal);
+
+  }
+
+}
+
+    createPetals();
+    loadData();
+
+  </script>
+  <div class="signature">
+
+  Crafted with ❤️ by Subhrajit Mandal
+
+</div>
+
+<button id="musicButton"
+        onclick="toggleMusic()">
+
+  🎵 Play Music
+
+</button>
+
+</body>
+
+</html>

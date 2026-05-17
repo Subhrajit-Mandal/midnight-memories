@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>Memory Capsule ❤️</title>
+
+  <link
+  href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap"
+  rel="stylesheet">
+
+  <style>
+
+    * {
+
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+
+    }
+
+    body {
+
+      height: 100vh;
+
+      overflow: hidden;
+
+      display: flex;
+
+      justify-content: center;
+
+      align-items: center;
+
+      flex-direction: column;
+
+      background:
+      linear-gradient(
+        135deg,
+        #fff0f5,
+        #ffe4e1
+      );
+
+      font-family:
+      Arial, sans-serif;
+
+      color: #ff4f7a;
+
+      text-align: center;
+
+      position: relative;
+
+    }
+
+
+
+    /* PETALS */
+
+    #petals {
+
+      position: fixed;
+
+      inset: 0;
+
+      pointer-events: none;
+
+      overflow: hidden;
+
+      z-index: 0;
+
+    }
+
+    .petal {
+
+      position: absolute;
+
+      top: -50px;
+
+      font-size: 24px;
+
+      animation: fall linear infinite;
+
+      opacity: 0.8;
+
+    }
+
+    @keyframes fall {
+
+      0% {
+
+        transform:
+        translateY(-10vh)
+        rotate(0deg);
+
+      }
+
+      100% {
+
+        transform:
+        translateY(110vh)
+        rotate(360deg);
+
+      }
+
+    }
+
+
+
+    /* CONTENT */
+
+    .container {
+
+      position: relative;
+
+      z-index: 1;
+
+      padding: 40px;
+
+    }
+
+    h1 {
+
+      font-family:
+      'Dancing Script',
+      cursive;
+
+      font-size: 72px;
+
+      margin-bottom: 20px;
+
+      text-shadow:
+      0 5px 20px rgba(0,0,0,0.1);
+
+    }
+
+    p {
+
+      font-size: 20px;
+
+      max-width: 700px;
+
+      line-height: 1.8;
+
+      margin-bottom: 40px;
+
+      color: #c77d92;
+
+    }
+
+    .btn {
+
+      display: inline-block;
+
+      padding: 18px 40px;
+
+      border-radius: 40px;
+
+      background:
+      linear-gradient(
+        135deg,
+        #ff4f7a,
+        #ff85a2
+      );
+
+      color: white;
+
+      text-decoration: none;
+
+      font-size: 20px;
+
+      transition: 0.3s;
+
+      box-shadow:
+      0 10px 30px rgba(255,79,122,0.3);
+
+    }
+
+    .btn:hover {
+
+      transform:
+      translateY(-3px)
+      scale(1.03);
+
+      box-shadow:
+      0 15px 40px rgba(255,79,122,0.4);
+
+    }
+
+    .signature {
+
+      position: fixed;
+
+      bottom: 15px;
+
+      left: 20px;
+
+      font-size: 14px;
+
+      color: #c77d92;
+
+      opacity: 0.8;
+
+      z-index: 2;
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div id="petals"></div>
+
+  <div class="container">
+
+    <h1>
+
+      Memory Capsule ❤️
+
+    </h1>
+
+    <p>
+
+      Create tiny corners of the internet
+      filled with affection, memories,
+      music, petals, and emotion.
+
+      A personalized digital letter
+      for someone who matters 🌸
+
+    </p>
+
+    <a href="create.html"
+       class="btn">
+
+      Create a Memory ✨
+
+    </a>
+
+  </div>
+
+  <div class="signature">
+
+    Crafted with ❤️ by Subhrajit Mandal
+
+  </div>
+
+
+
+  <script>
+
+    function createPetals() {
+
+      const petals =
+      document.getElementById("petals");
+
+
+
+      for(let i = 0; i < 25; i++) {
+
+        const petal =
+        document.createElement("div");
+
+
+
+        petal.classList.add("petal");
+
+        petal.innerHTML = "🌸";
+
+
+
+        petal.style.left =
+        Math.random() * 100 + "vw";
+
+
+
+        petal.style.animationDuration =
+        (8 + Math.random() * 10) + "s";
+
+
+
+        petal.style.animationDelay =
+        Math.random() * 10 + "s";
+
+
+
+        petal.style.fontSize =
+        (16 + Math.random() * 20) + "px";
+
+
+
+        petals.appendChild(petal);
+
+      }
+
+    }
+
+
+
+    createPetals();
+
+  </script>
+
+</body>
+
+</html>

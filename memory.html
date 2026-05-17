@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0"/>
+
+  <title>Memory Capsule ❤️</title>
+
+  <style>
+
+    body {
+
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #fff0f5;
+      color: #ff4f7a;
+      text-align: center;
+
+    }
+
+    .container {
+
+      width: 90%;
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+
+    }
+
+    .card {
+
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      margin-top: 30px;
+
+      box-shadow:
+      0 10px 30px rgba(0,0,0,0.1);
+
+    }
+
+    h1 {
+
+      font-size: 40px;
+
+    }
+
+    .message {
+
+      font-size: 22px;
+      margin-top: 20px;
+      line-height: 1.6;
+
+    }
+
+    .gallery {
+
+      display: grid;
+
+      grid-template-columns:
+      repeat(auto-fit, minmax(250px, 1fr));
+
+      gap: 20px;
+      margin-top: 40px;
+
+    }
+
+    .gallery img {
+
+      width: 100%;
+      border-radius: 20px;
+
+      box-shadow:
+      0 5px 20px rgba(0,0,0,0.1);
+
+    }
+
+    .buttons {
+
+      margin-top: 50px;
+
+    }
+
+    button {
+
+      border: none;
+      padding: 15px 35px;
+      border-radius: 30px;
+      font-size: 20px;
+      cursor: pointer;
+      margin: 10px;
+
+    }
+
+    .yes {
+
+      background: #ffd166;
+
+    }
+
+    .no {
+
+      background: #ef476f;
+      color: white;
+
+    }
+
+    #popup {
+
+      display: none;
+
+      position: fixed;
+      inset: 0;
+
+      background:
+      rgba(0,0,0,0.5);
+
+    }
+
+    .popup-content {
+
+      background: white;
+
+      width: 90%;
+      max-width: 450px;
+
+      margin: 15% auto;
+
+      padding: 30px;
+
+      border-radius: 20px;
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="card">
+
+      <h1 id="receiverName">
+        Someone Special ❤️
+      </h1>
+
+      <div class="message"
+           id="mainMessage">
+
+        Loading beautiful memories...
+
+      </div>
+
+    </div>
+
+    <div class="gallery"
+         id="gallery">
+
+    </div>
+
+    <div class="buttons">
+
+      <button class="yes"
+              onclick="showPopup()">
+
+        YES ❤️
+
+      </button>
+
+      <button class="no"
+              onclick="sadPopup()">
+
+        NO 💔
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- POPUP -->
+
+  <div id="popup">
+
+    <div class="popup-content">
+
+      <h2>💖</h2>
+
+      <p id="popupText">
+
+        She said yes ❤️
+
+      </p>
+
+      <button class="yes"
+              onclick="closePopup()">
+
+        Close
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <script>
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbxtb59g9IfPs6-jYE6obkxtZPGqA5vIMpj-Zovc4Yw0QH_aFrmNgmX8FBe-IEKJPt_KyA/exec";
+
+
+
+// GET URL
+
+const currentURL =
+window.location.href;
+
+console.log("FULL URL:", currentURL);
+
+
+
+// EXTRACT ID
+
+const url =
+new URL(currentURL);
+
+const id =
+url.searchParams.get("id");
+
+console.log("ID FOUND:", id);
+
+
+
+// MAIN FUNCTION
+
+async function loadMemory() {
+
+  // NO ID
+
+  if(!id) {
+
+    document.body.innerHTML = `
+
+      <h1>No Memory ID Found 😢</h1>
+
+      <p>
+        Open using:
+        memory.html?id=abc123
+      </p>
+
+    `;
+
+    return;
+  }
+
+  try {
+
+    // FETCH DATA
+
+    const response =
+    await fetch(`${API_URL}?id=${id}`);
+
+    const data =
+    await response.json();
+
+    console.log("DATA:", data);
+
+
+
+    // ERROR CHECK
+
+    if(data.error) {
+
+      document.body.innerHTML = `
+
+        <h1>Memory Not Found 😢</h1>
+
+        <p>
+          Invalid ID.
+        </p>
+
+      `;
+
+      return;
+    }
+
+
+
+    // UPDATE PAGE
+
+    document.getElementById(
+      "receiverName"
+    ).innerText =
+    data.receiver + " ❤️";
+
+
+
+    document.getElementById(
+      "mainMessage"
+    ).innerText =
+    data.message;
+
+
+
+    document.getElementById(
+      "popupText"
+    ).innerText =
+    data.popup;
+
+
+
+    // IMAGES
+
+    const gallery =
+    document.getElementById("gallery");
+
+
+
+    if(data.images &&
+       data.images.trim() !== "") {
+
+      const imageArray =
+      data.images.split(",");
+
+
+
+      imageArray.forEach(image => {
+
+        const trimmed =
+        image.trim();
+
+        if(trimmed !== "") {
+
+          const img =
+          document.createElement("img");
+
+          img.src =
+          trimmed;
+
+          gallery.appendChild(img);
+
+        }
+
+      });
+
+    }
+
+  }
+
+  catch(error) {
+
+    console.error(error);
+
+    document.body.innerHTML = `
+
+      <h1>
+        Something went wrong 😢
+      </h1>
+
+    `;
+  }
+}
+
+
+
+// POPUPS
+
+function showPopup() {
+
+  document.getElementById(
+    "popup"
+  ).style.display = "block";
+}
+
+
+
+function closePopup() {
+
+  document.getElementById(
+    "popup"
+  ).style.display = "none";
+}
+
+
+
+function sadPopup() {
+
+  alert(
+    "Why would you break their heart like that? 💔🥺"
+  );
+}
+
+
+
+// START
+
+loadMemory();
+
+</script>
+</body>
+
+</html>
