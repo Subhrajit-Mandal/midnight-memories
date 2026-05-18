@@ -353,6 +353,95 @@ textarea {
 
     }
     
+    .darkTheme {
+
+  background:
+  linear-gradient(
+    135deg,
+    #0f172a,
+    #1e293b
+  );
+
+  color: #e2e8f0;
+
+}
+
+
+
+.darkTheme .card {
+
+  background:
+  rgba(255,255,255,0.08);
+
+  backdrop-filter: blur(12px);
+
+  color: #f8fafc;
+
+}
+
+
+
+.darkTheme .box {
+
+  background:
+  linear-gradient(
+    135deg,
+    #334155,
+    #1e293b
+  );
+
+  color: white;
+
+}
+
+
+
+.darkTheme .popup-content {
+
+  background:
+  #1e293b;
+
+  color: white;
+
+}
+
+
+
+.darkTheme textarea {
+
+  background:
+  rgba(255,255,255,0.08);
+
+  color: white;
+
+  border: 1px solid #475569;
+
+}
+
+
+
+.darkTheme .signature {
+
+  color: #94a3b8;
+
+}
+
+
+
+.darkTheme #mainMessage {
+
+  color: #f1f5f9;
+
+}
+
+
+
+.darkTheme h1,
+.darkTheme h2 {
+
+  color: #f8fafc;
+
+}
 
 
   </style>
@@ -654,6 +743,14 @@ function toggleMusic() {
 
 
         memoryData = data;
+
+        if(data.replyType === "no") {
+
+  document.body.classList.add(
+    "darkTheme"
+  );
+
+}
 
 
 
