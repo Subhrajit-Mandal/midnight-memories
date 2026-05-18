@@ -791,9 +791,18 @@ function toggleMusic() {
         // NAME
 
         document.getElementById(
-          "receiverName"
-        ).innerText =
-        data.receiver + " ❤️";
+  "receiverName"
+).innerText =
+
+data.replyType === "no"
+
+?
+
+data.receiver + " 🌙"
+
+:
+
+data.receiver + " ❤️";
 
 
 
