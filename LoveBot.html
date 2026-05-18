@@ -26,6 +26,51 @@
 
     }
 
+    #replyPopup {
+
+  display: none;
+
+  position: fixed;
+
+  inset: 0;
+
+  background:
+  rgba(0,0,0,0.5);
+
+  z-index: 1000;
+
+}
+
+textarea {
+
+  width: 90%;
+
+  height: 120px;
+
+  padding: 15px;
+
+  border-radius: 15px;
+
+  border: 1px solid #ddd;
+
+  resize: none;
+
+  font-size: 16px;
+
+  outline: none;
+
+  line-height: 1.5;
+
+  vertical-align: top;
+
+  box-sizing: border-box;
+
+  font-family: Arial, sans-serif;
+
+  padding-top: 18px;
+
+}
+
     #musicButton {
 
   position: fixed;
@@ -137,21 +182,39 @@
 
     .card {
 
-      background: white;
+  background:
+  rgba(255,255,255,0.35);
 
-      border-radius: 20px;
+  backdrop-filter: blur(14px);
 
-      padding: 30px;
+  -webkit-backdrop-filter: blur(14px);
 
-      width: 80%;
-      max-width: 700px;
+  border-radius: 25px;
 
-      margin: 40px auto;
+  padding: 30px;
 
-      box-shadow:
-      0 10px 30px rgba(0,0,0,0.1);
+  width: 80%;
+  max-width: 700px;
 
-    }
+  margin: 40px auto;
+
+  border:
+  1px solid rgba(255,255,255,0.3);
+
+  box-shadow:
+  0 10px 30px rgba(0,0,0,0.08);
+
+  position: relative;
+
+  z-index: 1;
+
+}
+
+    #petals {
+
+  z-index: 0;
+
+}
 
     .signature {
 
@@ -292,16 +355,22 @@
 
     #popup {
 
-      display: none;
+  display: none;
 
-      position: fixed;
+  position: fixed;
 
-      inset: 0;
+  inset: 0;
 
-      background:
-      rgba(0,0,0,0.5);
+  background:
+  rgba(0,0,0,0.65);
 
-    }
+  backdrop-filter: blur(8px);
+
+  -webkit-backdrop-filter: blur(8px);
+
+  z-index: 1000;
+
+}
 
     .popup-content {
 
@@ -310,14 +379,123 @@
       width: 90%;
       max-width: 400px;
 
-      margin: 15% auto;
+      animation: popupFade 0.4s ease;
+
+      margin: 10vh auto;
 
       padding: 30px;
 
       border-radius: 20px;
 
     }
+
+    @keyframes popupFade {
+
+  from {
+
+    opacity: 0;
+    transform: scale(0.9);
+
+  }
+
+  to {
+
+    opacity: 1;
+    transform: scale(1);
+
+  }
+
+}
     
+    .darkTheme {
+
+  background:
+  linear-gradient(
+    135deg,
+    #0f172a,
+    #1e293b
+  );
+
+  color: #e2e8f0;
+
+}
+
+
+
+.darkTheme .card {
+
+  background:
+  rgba(255,255,255,0.08);
+
+  backdrop-filter: blur(12px);
+
+  color: #f8fafc;
+
+}
+
+
+
+.darkTheme .box {
+
+  background:
+  linear-gradient(
+    135deg,
+    #334155,
+    #1e293b
+  );
+
+  color: white;
+
+}
+
+
+
+.darkTheme .popup-content {
+
+  background:
+  #1e293b;
+
+  color: white;
+
+}
+
+
+
+.darkTheme textarea {
+
+  background:
+  rgba(255,255,255,0.08);
+
+  color: white;
+
+  border: 1px solid #475569;
+
+}
+
+
+
+.darkTheme .signature {
+
+  color: #94a3b8;
+
+}
+
+
+
+.darkTheme #mainMessage {
+
+  color: #f1f5f9;
+
+}
+
+
+
+.darkTheme h1,
+.darkTheme h2 {
+
+  color: #f8fafc;
+
+}
 
 
   </style>
@@ -392,21 +570,21 @@
 
   <div class="buttons">
 
-    <button class="yes"
-            onclick="showPopup()">
+  <button class="yes"
+          onclick="showPopup()">
 
       YES ❤️
 
-    </button>
+  </button>
 
-    <button class="no"
-            onclick="sadPopup()">
+  <button class="no"
+          onclick="openReplyPopup('no')">
 
       NO 💔
 
-    </button>
+  </button>
 
-  </div>
+</div>
 
 
 
@@ -425,15 +603,52 @@
       </p>
 
       <button class="yes"
-              onclick="closePopup()">
+        onclick="continueReply()">
 
-        Close
+  Send Something Back ❤️
 
-      </button>
+</button>
 
     </div>
 
   </div>
+
+  <div id="replyPopup">
+
+  <div class="popup-content">
+
+    <h2>
+
+      Send Something Back ✨
+
+    </h2>
+
+    <textarea id="replyMessage"
+      placeholder="Write from the heart..."></textarea>
+
+    </textarea>
+
+    <br><br>
+
+    <button class="yes"
+            onclick="generateReply()">
+
+      Generate Reply Link ❤️
+
+    </button>
+
+    <button class="no"
+            onclick="closeReplyPopup()">
+
+      Cancel
+
+    </button>
+
+    <p id="replyLink"></p>
+
+  </div>
+
+</div>
 
 
 
@@ -583,14 +798,31 @@ function toggleMusic() {
 
         memoryData = data;
 
+        if(data.replyType === "no") {
+
+  document.body.classList.add(
+    "darkTheme"
+  );
+
+}
+
 
 
         // NAME
 
         document.getElementById(
-          "receiverName"
-        ).innerText =
-        data.receiver + " ❤️";
+  "receiverName"
+).innerText =
+
+data.replyType === "no"
+
+?
+
+data.receiver + " 🌙"
+
+:
+
+data.receiver + " ❤️";
 
 
 
@@ -698,6 +930,13 @@ function toggleMusic() {
       "none";
 
     }
+    function continueReply() {
+
+      closePopup();
+
+    openReplyPopup("yes");
+
+    }
 
 
 
@@ -791,6 +1030,140 @@ function toggleMusic() {
     petalsContainer.appendChild(petal);
 
   }
+
+}
+
+  let replyChoice = "yes";
+
+
+
+function openReplyPopup(type) {
+
+  replyChoice = type;
+
+  document.getElementById(
+    "replyPopup"
+  ).style.display = "block";
+
+}
+
+
+
+function closeReplyPopup() {
+
+  document.getElementById(
+    "replyPopup"
+  ).style.display = "none";
+
+}
+
+
+
+async function generateReply() {
+
+  const replyMessage =
+
+  document.getElementById(
+    "replyMessage"
+  ).value;
+
+
+
+  if(replyMessage.trim() === "") {
+
+    alert("Write something first 🌸");
+
+    return;
+
+  }
+
+
+
+  const id =
+
+  Math.random()
+  .toString(36)
+  .substring(2, 8);
+
+
+
+  const payload = {
+
+    id,
+
+    sender:
+    memoryData.receiver,
+
+    receiver:
+    memoryData.sender,
+
+    message:
+    replyMessage,
+
+    popup:
+    replyChoice === "yes"
+
+    ?
+
+    "Your feelings were returned ❤️"
+
+    :
+
+    "Even honesty deserves kindness 🌙",
+
+
+
+    images: "",
+
+    replyType:
+    replyChoice
+
+  };
+
+
+
+  await fetch(API_URL, {
+
+    method: "POST",
+
+    body: JSON.stringify(payload)
+
+  });
+
+
+
+  const link =
+
+`https://midnight-memoirs.netlify.app/LoveBot.html?id=${id}`;
+
+
+
+  document.getElementById(
+    "replyLink"
+  ).innerHTML =
+
+  `
+
+  <br>
+
+  <a href="${link}"
+     target="_blank">
+
+     Open Reply ❤️
+
+  </a>
+
+  <br><br>
+
+  <button onclick="
+    navigator.clipboard.writeText('${link}')
+  ">
+
+    Copy Link
+
+  </button>
+
+  `;
 
 }
 
